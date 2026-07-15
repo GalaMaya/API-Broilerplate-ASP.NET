@@ -44,7 +44,7 @@ src/
 ### Clone the Repository
 
 ```bash
-git clone [<repository-url>](https://github.com/GalaMaya/API-Broilerplate-ASP.NET)
+git clone (https://github.com/GalaMaya/API-Broilerplate-ASP.NET)
 cd Boilerplate-ASPNet-API
 ```
 
