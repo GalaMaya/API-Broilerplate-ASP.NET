@@ -25,6 +25,7 @@ public class UsersController : ControllerBase
             var createdUser = await _userService.CreateUserAsync(request);
 
             return CreatedAtAction(
+                nameof(GetUserById),
                 new { id = createdUser.Id },
                 ApiResponse<UserResponseDto>.SuccessResponse(
                     new UserResponseDto(
@@ -77,6 +78,30 @@ public class UsersController : ControllerBase
         }
         catch(InvalidOperationException ex) {
             return BadRequest(ApiResponse<object>.ErrorResponse(ex.Message));
+        }
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetUserById(Guid id)
+    {
+        try
+        {
+            var user = await _userService.GetUserByIdAsync(id);
+
+            return Ok(ApiResponse<UserResponseDto>.SuccessResponse(
+                new UserResponseDto(
+                    user.Id,
+                    user.Name,
+                    user.Email,
+                    user.Status,
+                    user.CreatedAt
+                ),
+                "User retrieved successfully"
+            ));
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ApiResponse<object>.ErrorResponse(ex.Message));
         }
     }
 }
