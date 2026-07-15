@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Boilerplate-ASPNet-API.Application/Boilerplate-ASPNet-API.Application.csproj" />
+    <Project Path="src/Boilerplate-ASPNet-API.Domain/Boilerplate-ASPNet-API.Domain.csproj" />
+    <Project Path="src/Boilerplate-ASPNet-API.Infrastructure/Boilerplate-ASPNet-API.Infrastructure.csproj" />
+    <Project Path="src/Boilerplate-ASPNet-API.WebApi/Boilerplate-ASPNet-API.WebApi.csproj" />
+  </Folder>
+</Solution>
