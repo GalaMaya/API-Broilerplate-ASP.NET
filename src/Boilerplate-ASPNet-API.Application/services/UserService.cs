@@ -87,7 +87,7 @@ public class UserService : IUserService
 
         checkUser.Name = request.Name;
         checkUser.Email = request.Email;
-        checkUser.Status = request.Status.ToIntOrThrow();
+        checkUser.Status = request.Status;
         checkUser.UpdatedAt = DateTime.UtcNow;
 
         await _userRepository.UpdateAsync(checkUser);
