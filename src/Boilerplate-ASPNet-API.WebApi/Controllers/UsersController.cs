@@ -80,4 +80,22 @@ public class UsersController : ControllerBase
             return BadRequest(ApiResponse<object>.ErrorResponse(ex.Message));
         }
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetUserById(Guid id)
+    {
+        try
+        {
+            var user = await _userService.GetUserByIdAsync(id);
+
+            return Ok(ApiResponse<UserResponseDto>.SuccessResponse(
+                user,
+                "User retrieved successfully"
+            ));
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ApiResponse<object>.ErrorResponse(ex.Message));
+        }
+    }
 }
