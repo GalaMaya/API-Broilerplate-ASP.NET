@@ -89,7 +89,13 @@ public class UsersController : ControllerBase
             var user = await _userService.GetUserByIdAsync(id);
 
             return Ok(ApiResponse<UserResponseDto>.SuccessResponse(
-                user,
+                new UserResponseDto(
+                    user.Id,
+                    user.Name,
+                    user.Email,
+                    user.Status,
+                    user.CreatedAt
+                ),
                 "User retrieved successfully"
             ));
         }
