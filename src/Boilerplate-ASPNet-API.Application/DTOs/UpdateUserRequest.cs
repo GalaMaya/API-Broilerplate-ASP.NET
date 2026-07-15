@@ -4,5 +4,5 @@ public record UpdateUserRequest
 (
     string Name,
     string Email,
-    string Status
+    int Status
 );

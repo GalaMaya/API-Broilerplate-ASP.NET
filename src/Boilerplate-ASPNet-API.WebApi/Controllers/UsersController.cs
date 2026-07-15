@@ -45,7 +45,7 @@ public class UsersController : ControllerBase
         }
     }
 
-   
+    [HttpPut("{id}")]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserRequest request)
     {
         try
