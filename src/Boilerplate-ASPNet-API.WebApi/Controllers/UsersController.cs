@@ -25,6 +25,7 @@ public class UsersController : ControllerBase
             var createdUser = await _userService.CreateUserAsync(request);
 
             return CreatedAtAction(
+                nameof(GetUserById),
                 new { id = createdUser.Id },
                 ApiResponse<UserResponseDto>.SuccessResponse(
                     new UserResponseDto(
