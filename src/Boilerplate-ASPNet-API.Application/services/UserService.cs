@@ -100,4 +100,15 @@ public class UserService : IUserService
             CreatedAt: checkUser.CreatedAt
         );
     }
+
+    public async Task DeleteUserAsync(Guid Id)
+    {
+        var user = await _userRepository.GetByIdAsync(Id);
+        if (user == null)
+        {
+            throw new KeyNotFoundException($"User with ID {Id} not found.");
+        }
+
+        await _userRepository.DeleteUserAsync(Id);
+    }
 }

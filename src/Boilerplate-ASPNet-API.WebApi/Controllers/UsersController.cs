@@ -104,4 +104,25 @@ public class UsersController : ControllerBase
             return NotFound(ApiResponse<object>.ErrorResponse(ex.Message));
         }
     }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUser(Guid id) 
+    {
+        try
+        {
+            var User = await _userService.GetUserByIdAsync(id);
+
+            if(User == null)
+            {
+                return NotFound(ApiResponse<object>.ErrorResponse($"User with ID {id} not found."));
+            }
+
+            await _userService.DeleteUserAsync(id);
+
+            return Ok(ApiResponse<object>.SuccessResponse(null, "User deleted successfully"));
+        }
+        catch (KeyNotFoundException ex) 
+        {
+            return NotFound(ApiResponse<object>.ErrorResponse(ex.Message));
+        }
+    }
 }

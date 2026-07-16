@@ -13,4 +13,6 @@ public interface IUserService
     Task<User> GetUserByIdAsync(Guid id);
 
     Task<UserResponseDto> UpdateUserAsync(Guid Id, UpdateUserRequest request);
+
+    Task DeleteUserAsync(Guid Id);
 }
