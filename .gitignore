@@ -1,98 +1,35 @@
 ```
 # Build artifacts
+**/bin/
+**/obj/
+**/Debug/
+**/Release/
 *.dll
 *.exe
 *.pdb
-*.so
-*.dylib
-*.class
-*.o
-*.obj
-*.out
-*.bin
-*.jar
-*.war
-*.ear
+*.nupkg
 
 # Dependencies
-node_modules/
 packages/
-lib/
-deps/
-
-# Build directories
-bin/
-obj/
-out/
-dist/
-build/
-target/
-release/
-debug/
-
-# Configuration files
-appsettings.Production.json
-appsettings.Staging.json
+node_modules/
 
 # Logs
 *.log
-logs/
 
 # Environment
 .env
 .env.local
-.env.*
-!.env.example
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+*.user
+*.userosscache
+*.suo
+*.csproj.user
 
 # OS generated files
 .DS_Store
 Thumbs.db
-desktop.ini
-
-# IDE
-.vs/
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Temporary files
-*.tmp
-*.temp
-*~
-.#*
-.DS_Store?
-._*
-
-# User-specific files
-*.user
-*.userosscache
-*.sln.docstates
-
-# Localized resources
-*.resx
-*.resources.dll
-
-# SQLite databases
-*.db
-*.db-shm
-*.db-wal
-
-# Test results
-TestResults/
-coverage/
-htmlcov/
-*.coverage
-
-# Package manager cache
-.nuget/
-packages/
-.npm/
-.yarn/
-bower_components/
-
-# Security
-secrets/
-credentials/
-private.key
 ```

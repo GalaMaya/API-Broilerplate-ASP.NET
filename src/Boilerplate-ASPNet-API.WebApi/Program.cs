@@ -4,6 +4,9 @@ using Boilerplate_ASPNet_API.Application.Interfaces;
 using Boilerplate_ASPNet_API.Infrastructure.Repositories;
 using Boilerplate_ASPNet_API.Application.Services;
 using Boilerplate_ASPNet_API.Infrastructure.Security;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
