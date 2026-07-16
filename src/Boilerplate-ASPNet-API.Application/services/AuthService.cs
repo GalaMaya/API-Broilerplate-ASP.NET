@@ -9,11 +9,13 @@ public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly ITokenService _tokenService;
 
-    public AuthService(IUserRepository userRepository, IPasswordHasher passwordHasher)
+    public AuthService(IUserRepository userRepository, IPasswordHasher passwordHasher, ITokenService tokenService)
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
+        _tokenService = tokenService;
     }
 
     // login
@@ -37,11 +39,13 @@ public class AuthService : IAuthService
             throw new InvalidOperationException("Your Account inactive.");
         }
 
+        var token = _tokenService.GenerateToken(user);
+
         return new LoginResponse(
             user.Id,
             user.Name,
             user.Email,
-            "mock_token_jwt_123"
+            token
         );
     }
 }

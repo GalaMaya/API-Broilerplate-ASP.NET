@@ -3,6 +3,7 @@ using Boilerplate_ASPNet_API.Application.DTOs;
 using Boilerplate_ASPNet_API.Application.Services;
 using Boilerplate_ASPNet_API.WebApi.Common.Helpers;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Boilerplate_ASPNet_API.WebApi.Controllers;
 
@@ -19,6 +20,7 @@ public class UsersController : ControllerBase
         _authService = authService;
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
     {
@@ -47,6 +49,7 @@ public class UsersController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserRequest request)
     {
@@ -66,6 +69,7 @@ public class UsersController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAllUser()
     {
@@ -83,6 +87,7 @@ public class UsersController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserById(Guid id)
     {
@@ -106,6 +111,8 @@ public class UsersController : ControllerBase
             return NotFound(ApiResponse<object>.ErrorResponse(ex.Message));
         }
     }
+
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(Guid id) 
     {
