@@ -11,10 +11,12 @@ namespace Boilerplate_ASPNet_API.WebApi.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly UserService _userService;
+    private readonly AuthService _authService;
 
-    public UsersController(UserService userService)
+    public UsersController(UserService userService, AuthService authService)
     {
         _userService = userService;
+        _authService = authService;
     }
 
     [HttpPost]
@@ -131,7 +133,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var loginResult = await _userService.LoginAsync(request);
+            var loginResult = await _authService.LoginAsync(request);
 
             return Ok(ApiResponse<LoginResponse>.SuccessResponse(loginResult, "Login successful"));
         }
