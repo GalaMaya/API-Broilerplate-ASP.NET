@@ -125,4 +125,23 @@ public class UsersController : ControllerBase
             return NotFound(ApiResponse<object>.ErrorResponse(ex.Message));
         }
     }
+
+    [HttpPost("login")] // Route: POST /api/users/login
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    {
+        try
+        {
+            var loginResult = await _userService.LoginAsync(request);
+
+            return Ok(ApiResponse<LoginResponse>.SuccessResponse(loginResult, "Login successful"));
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Unauthorized(ApiResponse<object>.ErrorResponse(ex.Message));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ApiResponse<object>.ErrorResponse("Terjadi kesalahan internal pada server."));
+        }
+    }
 }

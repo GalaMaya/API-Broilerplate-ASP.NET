@@ -3,6 +3,7 @@ using Boilerplate_ASPNet_API.Infrastructure.Data;
 using Boilerplate_ASPNet_API.Application.Interfaces;
 using Boilerplate_ASPNet_API.Infrastructure.Repositories;
 using Boilerplate_ASPNet_API.Application.Services;
+using Boilerplate_ASPNet_API.Infrastructure.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite("Data Source=boilerplate.db"));
 
 // 2. Dependency Injection
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<UserService>();
 
