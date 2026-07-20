@@ -11,13 +11,11 @@ namespace Boilerplate_ASPNet_API.WebApi.Controllers;
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
-    private readonly UserService _userService;
-    private readonly AuthService _authService;
+    private readonly IUserService _userService;
 
-    public UsersController(UserService userService, AuthService authService)
+    public UsersController(IUserService userService)
     {
         _userService = userService;
-        _authService = authService;
     }
 
     [Authorize]
@@ -132,25 +130,6 @@ public class UsersController : ControllerBase
         catch (KeyNotFoundException ex) 
         {
             return NotFound(ApiResponse<object>.ErrorResponse(ex.Message));
-        }
-    }
-
-    [HttpPost("login")] // Route: POST /api/users/login
-    public async Task<IActionResult> Login([FromBody] LoginRequest request)
-    {
-        try
-        {
-            var loginResult = await _authService.LoginAsync(request);
-
-            return Ok(ApiResponse<LoginResponse>.SuccessResponse(loginResult, "Login successful"));
-        }
-        catch (InvalidOperationException ex)
-        {
-            return Unauthorized(ApiResponse<object>.ErrorResponse(ex.Message));
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, ApiResponse<object>.ErrorResponse("Terjadi kesalahan internal pada server."));
         }
     }
 }

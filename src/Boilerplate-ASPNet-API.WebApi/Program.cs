@@ -4,9 +4,12 @@ using Boilerplate_ASPNet_API.Application.Interfaces;
 using Boilerplate_ASPNet_API.Infrastructure.Repositories;
 using Boilerplate_ASPNet_API.Application.Services;
 using Boilerplate_ASPNet_API.Infrastructure.Security;
+using Boilerplate_ASPNet_API.WebApi.Common.Helpers;
 using System.Text;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,8 +21,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // 2. Dependency Injection
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 // 3. KONFIGURASI JWT AUTHENTICATION
@@ -43,6 +46,26 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(secretKey)
     };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnChallenge = context =>
+        {
+            // 1. Hentikan proses default ASP.NET Core (agar tidak return HTML/empty)
+            context.HandleResponse();
+
+            // 2. Set Header Response
+            context.Response.StatusCode = 401; // Unauthorized
+            context.Response.ContentType = "application/json";
+
+            // 3. Buat pesan error custom menggunakan ApiResponse helper kita
+            var response = ApiResponse<object>.ErrorResponse("Token tidak valid atau sudah kedaluwarsa. Silakan login kembali.");
+
+            // 4. Serialize ke JSON dan kirim ke client
+            var jsonResponse = JsonSerializer.Serialize(response);
+            return context.Response.WriteAsync(jsonResponse);
+        }
+    };
 });
 
 
@@ -50,6 +73,37 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Boilerplate API", Version = "v1" });
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header menggunakan skema Bearer. Contoh: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+
 
 var app = builder.Build();
 
